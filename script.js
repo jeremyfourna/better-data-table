@@ -63,7 +63,7 @@ function renderHeader(sorting, headers) {
 	}
 
 	$('#table > thead > th').remove();
-	
+
 	setSortingState(sorting);
 
 	return $('#table > thead').append(
@@ -121,7 +121,7 @@ function renderPagination(show, current ,rows) {
 
 	const nbRows = R.length(rows);
 	const nbPages = R.range(1, R.inc(R.divide(nbRows, show)));
-	
+
 	return $('.pagination').append(
 		R.map((cur) => {
 			if (R.equals(current, cur)) {
