@@ -1,4 +1,4 @@
-const defaultData = generateDefaultData(20);
+const defaultData = generateDefaultData(200);
 const defaultSort = {
 	field: "age",
 	asc: true
@@ -76,12 +76,14 @@ function renderHeader(sorting, headers) {
 		}, headers)}</tr>`);
 }
 
+
 function setSortingState(sorting) {
 	$('#table > thead').attr('data-sorted-column', R.prop('field', sorting));
 	$('#table > thead').attr('data-sorted-way', R.prop('asc', sorting));
 
 	return sorting;
 }
+
 
 function getSortingState() {
 	const asc = $('#table > thead').attr('data-sorted-way') === "true" ? true : false;
@@ -92,10 +94,16 @@ function getSortingState() {
 }
 
 
-function renderShow(show, list) {
-	$('.show > option').remove();
+function getShowState() {
+	return Number($('.show').val());
+}
 
-	return $('.show').append(
+
+function renderShow(show, list, nbRows) {
+	$('.show > option').remove();
+	$('.showContainer > .nbRows').remove();
+
+	$('.show').append(
 		R.map((cur) => {
 			if (R.equals(show, cur)) {
 				return `<option selected="selected" value="${cur}">${cur}</option>`;
@@ -103,6 +111,8 @@ function renderShow(show, list) {
 				return `<option value="${cur}">${cur}</option>`;
 			}
 		}, list));
+
+	$('.showContainer').append(`<span class="nbRows"> rows out of ${nbRows}</span>`);
 }
 
 
@@ -124,12 +134,18 @@ function renderPagination(show, current ,rows) {
 
 
 function registerEventListeners() {
+	//////////////////////////////////////////
+	// Events for table heading and sorting //
+	////////////////////////////////////////
 	$('body').on('click', '#chevronToSort', function(event) {
 		const currentSortingState = getSortingState();
 		const inverse = R.equals(R.prop('asc', currentSortingState), true);
 		const newSort = R.assoc('asc', !inverse, currentSortingState);
+
 		setSortingState(newSort);
-		renderDataTable(defaultShow, defaultPagination, newSort, defaultData);
+
+		renderDataTable(getShowState(), defaultPagination, newSort, defaultData);
+
 		event.stopPropagation();
 	});
 
@@ -149,13 +165,52 @@ function registerEventListeners() {
 			newSort = R.evolve(transformations, currentSortingState);
 		}
 
-		renderDataTable(defaultShow, defaultPagination, newSort, defaultData);
+		renderDataTable(getShowState(), defaultPagination, newSort, defaultData);
+	});
+
+	////////////////////////////////
+	// Events for the pagination //
+	//////////////////////////////
+	$('body').on('change', 'select.pagination', function(event) {
+		const valueLens = R.lensPath(['target', 'value']);
+		const newPageToDisplay = Number(R.view(valueLens, event));
+
+		renderDataTable(getShowState(), newPageToDisplay, getSortingState(), defaultData);
+	});
+
+	////////////////////////////////
+	// Events for showing x rows //
+	//////////////////////////////
+	$('body').on('change', 'select.show', function(event) {
+		const valueLens = R.lensPath(['target', 'value']);
+		const newNbRowsToDisplay = Number(R.view(valueLens, event));
+
+		renderDataTable(newNbRowsToDisplay, defaultPagination, getSortingState(), defaultData);
+	});
+
+	////////////////////////////////
+	// Events for the density //
+	//////////////////////////////
+	$('body').on('click', '.density', function(event) {
+		const densityLens = R.lensPath(['target', 'dataset', 'density']);
+		const classLens = R.lensPath(['target', 'classList']);
+		const newDensity = Number(R.view(densityLens, event));
+		const buttonClassToDisable = R.join('', R.map((cur) => {
+			return `.${cur}`;
+		},R.view(classLens, event)));
+
+		$('.density').attr('disabled', false);
+		$(buttonClassToDisable).attr('disabled', true);
+		$('td, th').css('padding-top', `${newDensity}rem`);
+		$('td, th').css('padding-bottom', `${newDensity}rem`);
 	});
 }
 
 function removeEventListeners() {
 	$("body").off('click', 'th');
 	$("body").off('click', '#chevronToSort');
+	$("body").off('change', 'select.pagination');
+	$("body").off('change', 'select.show');
 }
 
 function renderDataTable(show, currentPage, sorting, rows) {
@@ -166,6 +221,6 @@ function renderDataTable(show, currentPage, sorting, rows) {
 
 	renderHeader(sorting, headers);
 	renderRows(show, currentPage, sorting, rows);
-	renderShow(show, [10, 20, 50, 100, 500]);
+	renderShow(show, [10, 20, 50, 100, 500], R.length(defaultData));
 	renderPagination(show, currentPage, defaultData);
 }
