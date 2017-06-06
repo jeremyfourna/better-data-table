@@ -6,3 +6,13 @@ td,
 th {
     padding: 1rem;
 }
+
+td {
+    text-align: center;
+}
+
+.better-data-table,
+table,
+.controls {
+    width: 100%;
+}

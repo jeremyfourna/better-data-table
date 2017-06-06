@@ -101,7 +101,7 @@ function getShowState() {
 
 function renderShow(show, list, nbRows) {
 	$('.show > option').remove();
-	$('.showContainer > .nbRows').remove();
+	$('.show-container > .nbRows').remove();
 
 	$('.show').append(
 		R.map((cur) => {
@@ -112,7 +112,7 @@ function renderShow(show, list, nbRows) {
 			}
 		}, list));
 
-	$('.showContainer').append(`<span class="nbRows"> rows out of ${nbRows}</span>`);
+	$('.show-container').append(`<span class="nbRows"> rows out of ${nbRows}</span>`);
 }
 
 
