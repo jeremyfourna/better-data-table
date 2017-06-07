@@ -180,9 +180,10 @@ function registerEventListeners() {
 		const fieldLens = R.lensPath(['target', 'dataset','field']);
 		const newFieldToSort = R.view(fieldLens, event);
 		const currentSortingState = getSortingState();
+		console.log('event th', newFieldToSort, currentSortingState);
 
 		if (R.equals(newFieldToSort, R.prop('field', currentSortingState))) {
-			newSort = R.assoc('asc', !R.prop('asc', currentSortingState), newSort);
+			newSort = R.assoc('asc', !R.prop('asc', currentSortingState), currentSortingState);
 		} else {
 			const transformations = {
 				field: R.always(newFieldToSort),
@@ -190,7 +191,7 @@ function registerEventListeners() {
 			};
 			newSort = R.evolve(transformations, currentSortingState);
 		}
-
+		console.log(newSort);
 		renderDataTable(getShowState(), defaultPagination, newSort, defaultData);
 	});
 

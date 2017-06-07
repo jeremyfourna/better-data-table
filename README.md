@@ -11,12 +11,10 @@ Inspiration : https://uxdesign.cc/design-better-data-tables-4ecc99d23356
 
 ## WIP
 
-
+* Visual Table Summary
 
 ## To do
 
-
-* Visual Table Summary
 * Hover Actions
 * Inline Editing
 * Expandable Rows
