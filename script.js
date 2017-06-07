@@ -13,17 +13,30 @@ renderDataTable(defaultShow, defaultPagination, defaultSort, defaultData);
 function generateDefaultData(howMany) {
 	const list = R.range(0, howMany);
 	return R.map((cur) => {
-		return {
-			_id: cur,
-			lastName: "Doe",
-			firstName: "John",
-			age: Math.ceil(Math.random() * 30),
-			hair: "Brown",
-			city: "Berlin",
-			status: "single"
-		};
+		if (R.gt(Math.random(), 0.49)) {
+			return {
+				_id: cur,
+				lastName: "Doe",
+				firstName: "John",
+				age: Math.ceil(Math.random() * 20),
+				hair: "Brown",
+				city: "Berlin",
+				status: "single"
+			};
+		} else {
+			return {
+				_id: cur,
+				lastName: "Simpson",
+				firstName: "Bart",
+				age: Math.ceil(Math.random() * 15),
+				hair: "Yellow",
+				city: "Springfield",
+				status: "single"
+			};
+		}
 	}, list);
 }
+
 
 
 function renderRows(show, currentPage, sorting, rows) {
