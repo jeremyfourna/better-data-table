@@ -35,14 +35,13 @@ function renderRows(show, currentPage, sorting, rows) {
 		}
 	}
 
-	$('#table > tbody > tr').remove();
+	$('#table tbody > tr').remove();
 
 	const whereToStart = R.multiply(show, R.dec(currentPage));
 	const whereToEnd = R.add(whereToStart, show);
 	const rowsToRender = R.slice(whereToStart, whereToEnd, wayToSort(sorting, rows));
 
-
-	return $('#table > tbody').append(R.map((cur) => {
+	$('#table > tbody').append(R.map((cur) => {
 					const rowValues = R.values(cur);
 					return `<tr>
 					${R.map((cur) => {
@@ -66,7 +65,7 @@ function renderHeader(sorting, headers) {
 
 	setSortingState(sorting);
 
-	return $('#table > thead').append(
+	$('#table > thead').append(
 		`</tr>${R.map((cur) => {
 			if (R.equals(R.prop('field', sorting), cur)) {
 				return sortedColumns(R.prop('asc', sorting), cur);
@@ -96,6 +95,17 @@ function getSortingState() {
 
 function getShowState() {
 	return Number($('.show').val());
+}
+
+function setDensityState(densityState) {
+	$('.controls-density').attr('data-density-state', densityState);
+
+	return densityState;
+}
+
+
+function getDensityState() {
+	return Number($('.controls-density').attr('data-density-state'));
 }
 
 
@@ -142,8 +152,8 @@ function registerEventListeners() {
 	////////////////////////////////////////
 	$('body').on('click', '#chevronToSort', function(event) {
 		const currentSortingState = getSortingState();
-		const inverse = R.equals(R.prop('asc', currentSortingState), true);
-		const newSort = R.assoc('asc', !inverse, currentSortingState);
+		const inverse = !R.equals(R.prop('asc', currentSortingState), true);
+		const newSort = R.assoc('asc', inverse, currentSortingState);
 
 		setSortingState(newSort);
 
@@ -206,6 +216,8 @@ function registerEventListeners() {
 		$(buttonClassToDisable).attr('disabled', true);
 		$('td, th').css('padding-top', `${newDensity}rem`);
 		$('td, th').css('padding-bottom', `${newDensity}rem`);
+
+		setDensity(newDensity);
 	});
 }
 
@@ -218,6 +230,7 @@ function removeEventListeners() {
 
 function renderDataTable(show, currentPage, sorting, rows) {
 	const headers = R.keys(R.head(defaultData));
+	const currentDensityState = getDensityState();
 
 	removeEventListeners();
 	registerEventListeners();
@@ -226,4 +239,11 @@ function renderDataTable(show, currentPage, sorting, rows) {
 	renderRows(show, currentPage, sorting, rows);
 	renderShow(show, [10, 20, 50, 100, 500], R.length(defaultData));
 	renderPagination(show, currentPage, defaultData);
+	setDensity(currentDensityState);
+}
+
+function setDensity(density) {
+	$('td, th').css('padding-top', `${density}rem`);
+	$('td, th').css('padding-bottom', `${density}rem`);
+	setDensityState(density);
 }
