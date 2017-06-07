@@ -4,24 +4,33 @@ th:hover {
 
 th {
     padding: 1rem;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
 }
 
 td {
     padding: 1rem;
     text-align: center;
-    border-bottom: 1px solid grey;
 }
 
-table > tbody > tr:last-child > td {
+.line-divisions > tbody > tr:last-child > td {
     border-bottom: 1px solid black;
 }
 
-.better-data-table,
-table,
-.controls {
-    width: 100%;
+.line-divisions td {
+    border-bottom: 1px solid grey;
+}
+
+.line-divisions th {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.zebra-stripes > tbody > tr:nth-child(even) {
+    background-color: #F2F2F2;
+}
+
+.better-data-table {
+    max-width: 1000px;
+    margin: auto;
 }
 
 .controls {
@@ -33,6 +42,8 @@ table,
 }
 
 table {
+    width: 100%;
     margin-bottom: 5px;
     margin-top: 5px;
+    border-spacing: 0px;
 }

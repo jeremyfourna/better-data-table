@@ -7,6 +7,7 @@ Inspiration : https://uxdesign.cc/design-better-data-tables-4ecc99d23356
 * Sortable Columns
 * Display Density
 * Pagination
+* Row Style
 
 ## WIP
 
@@ -14,10 +15,7 @@ Inspiration : https://uxdesign.cc/design-better-data-tables-4ecc99d23356
 
 ## To do
 
-* Fixed Header
-* Horizontal scroll
-* Resizable columns
-* Row Style
+
 * Visual Table Summary
 * Hover Actions
 * Inline Editing
@@ -31,3 +29,9 @@ Inspiration : https://uxdesign.cc/design-better-data-tables-4ecc99d23356
 * Searchable Columns
 * Add Columns
 * Customizable Columns
+
+## Later version
+
+* Fixed Header
+* Horizontal scroll
+* Resizable columns
