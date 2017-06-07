@@ -101,7 +101,7 @@ function getShowState() {
 
 function renderShow(show, list, nbRows) {
 	$('.show > option').remove();
-	$('.show-container > .nbRows').remove();
+	$('.controls-show > .nbRows').remove();
 
 	$('.show').append(
 		R.map((cur) => {
@@ -112,17 +112,18 @@ function renderShow(show, list, nbRows) {
 			}
 		}, list));
 
-	$('.show-container').append(`<span class="nbRows"> rows out of ${nbRows}</span>`);
+	$('.controls-show').append(`<span class="nbRows"> rows out of ${nbRows}. </span>`);
 }
 
 
 function renderPagination(show, current ,rows) {
 	$('.pagination > option').remove();
+	$('.controls-pagination > .nbPages').remove();
 
 	const nbRows = R.length(rows);
 	const nbPages = R.range(1, R.inc(R.divide(nbRows, show)));
 
-	return $('.pagination').append(
+	$('.pagination').append(
 		R.map((cur) => {
 			if (R.equals(current, cur)) {
 				return `<option selected="selected" value="${cur}">${cur}</option>`;
@@ -130,6 +131,8 @@ function renderPagination(show, current ,rows) {
 				return `<option value="${cur}">${cur}</option>`;
 			}
 		}, nbPages));
+
+	$('.controls-pagination').append(`<span class="nbPages"> of ${R.last(nbPages)}</span>`);
 }
 
 

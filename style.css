@@ -1,18 +1,26 @@
 th:hover {
     cursor: pointer;
 }
+
 td,
 th {
     padding: 1rem;
 }
+
 td {
     text-align: center;
 }
+
 .better-data-table,
 table,
 .controls {
     width: 100%;
 }
+
 .controls {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
 }
