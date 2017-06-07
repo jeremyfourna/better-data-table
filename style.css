@@ -47,3 +47,12 @@ table {
     margin-top: 5px;
     border-spacing: 0px;
 }
+
+.data-table {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+tbody > tr > td > input {
+    width: 100%;
+}

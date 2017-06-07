@@ -8,6 +8,7 @@ Inspiration : https://uxdesign.cc/design-better-data-tables-4ecc99d23356
 * Display Density
 * Pagination
 * Row Style
+* Inline Editing
 
 ## WIP
 
@@ -16,7 +17,6 @@ Inspiration : https://uxdesign.cc/design-better-data-tables-4ecc99d23356
 ## To do
 
 * Hover Actions
-* Inline Editing
 * Expandable Rows
 * Quick View
 * Modal

@@ -48,13 +48,13 @@ function renderRows(show, currentPage, sorting, rows) {
 		}
 	}
 
-	$('#table tbody > tr').remove();
+	$('table tbody > tr').remove();
 
 	const whereToStart = R.multiply(show, R.dec(currentPage));
 	const whereToEnd = R.add(whereToStart, show);
 	const rowsToRender = R.slice(whereToStart, whereToEnd, wayToSort(sorting, rows));
 
-	$('#table > tbody').append(R.map((cur) => {
+	$('table > tbody').append(R.map((cur) => {
 					const rowValues = R.values(cur);
 					return `<tr>
 					${R.map((cur) => {
@@ -74,11 +74,11 @@ function renderHeader(sorting, headers) {
 		}
 	}
 
-	$('#table > thead > th').remove();
+	$('table > thead > th').remove();
 
 	setSortingState(sorting);
 
-	$('#table > thead').append(
+	$('table > thead').append(
 		`</tr>${R.map((cur) => {
 			if (R.equals(R.prop('field', sorting), cur)) {
 				return sortedColumns(R.prop('asc', sorting), cur);
@@ -90,18 +90,18 @@ function renderHeader(sorting, headers) {
 
 
 function setSortingState(sorting) {
-	$('#table > thead').attr('data-sorted-column', R.prop('field', sorting));
-	$('#table > thead').attr('data-sorted-way', R.prop('asc', sorting));
+	$('table > thead').attr('data-sorted-column', R.prop('field', sorting));
+	$('table > thead').attr('data-sorted-way', R.prop('asc', sorting));
 
 	return sorting;
 }
 
 
 function getSortingState() {
-	const asc = $('#table > thead').attr('data-sorted-way') === "true" ? true : false;
+	const asc = $('table > thead').attr('data-sorted-way') === "true" ? true : false;
 	return {
 		asc, 
-		field: $('#table > thead').attr('data-sorted-column')
+		field: $('table > thead').attr('data-sorted-column')
 	};
 }
 
@@ -215,9 +215,9 @@ function registerEventListeners() {
 		renderDataTable(newNbRowsToDisplay, defaultPagination, getSortingState(), defaultData);
 	});
 
-	////////////////////////////////
+	/////////////////////////////
 	// Events for the density //
-	//////////////////////////////
+	///////////////////////////
 	$('body').on('click', '.density', function(event) {
 		const densityLens = R.lensPath(['target', 'dataset', 'density']);
 		const classLens = R.lensPath(['target', 'classList']);
@@ -233,6 +233,36 @@ function registerEventListeners() {
 
 		setDensity(newDensity);
 	});
+
+	///////////////////////////////////
+	// Events for the editing a row //
+	/////////////////////////////////
+	$('body').on('dblclick', 'tbody > tr.edit-mode', function(event) {
+		const childrenLens = R.lensPath(['currentTarget', 'children']);
+		const trChildren = R.view(childrenLens, event);
+		const inputLens = R.lensPath(['firstElementChild', 'value']);
+		const newTD = R.map((cur) => {
+			const inputValue = R.view(inputLens, cur);
+			return `<td>${inputValue}</td>`;
+		}, trChildren);
+		$(R.prop('currentTarget', event)).removeClass('edit-mode');
+		$(R.prop('currentTarget', event)).find('td').remove();
+		R.map((cur) => {
+			$(R.prop('currentTarget', event)).append(cur);
+		}, newTD);
+	});
+	$('body').on('click', 'tbody > tr:not(.edit-mode)', function(event) {
+		const childrenLens = R.lensPath(['currentTarget', 'children']);
+		const trChildren = R.view(childrenLens, event);
+		const newTR = R.map((cur) => {
+			return `<td><input type="text" value="${R.prop('innerHTML', cur)}"></td>`;
+		}, trChildren);
+		$(R.prop('currentTarget', event)).addClass('edit-mode');
+		$(R.prop('currentTarget', event)).find('td').remove();
+		R.map((cur) => {
+			$(R.prop('currentTarget', event)).append(cur);
+		}, newTR);
+	});
 }
 
 function removeEventListeners() {
@@ -240,6 +270,8 @@ function removeEventListeners() {
 	$("body").off('click', '#chevronToSort');
 	$("body").off('change', 'select.pagination');
 	$("body").off('change', 'select.show');
+	$("body").off('click', 'tbody > tr:not(.edit-mode)');
+	$("body").off('dblclick', 'tbody > tr.edit-mode');
 }
 
 function renderDataTable(show, currentPage, sorting, rows) {

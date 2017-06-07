@@ -27,7 +27,7 @@ function pieChartForTable(element, field, data) {
 	svg.append("svg:text")
 		.attr("class", "title")
 		.attr("x", -30)
-		.attr("y", 20)
+		.attr("y", -15)
 		.text(`Distribution of ${field}`);
 
 	const pie = d3.pie()

@@ -3,6 +3,8 @@
 
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <title>Better Data Table</title>
         <link rel="stylesheet" type="text/css" href="style.css">
         <link rel="stylesheet" type="text/css" href="style-chart.css">
@@ -14,42 +16,44 @@
             <div class="charts">
                 <svg class="pie-chart" width="440" height="300"></svg>
             </div>
-            <div class="controls">
-                <div class="controls-show">Display
-                    <select class="show">
-                    </select>
+            <div class="data-table">
+                <div class="controls">
+                    <div class="controls-show">Display
+                        <select class="show">
+                        </select>
+                    </div>
+                    <div class="controls-density" data-density-state="1">
+                        Row density :
+                        <button class="density density-L" data-density="1" disabled="disabled" type="button">L</button>
+                        <button class="density density-M" data-density="0.5" type="button">M</button>
+                        <button class="density density-S" data-density="0.25" type="button">S</button>
+                    </div>
+                    <div class="controls-pagination">
+                        Show page
+                        <select class="pagination">
+                        </select>
+                    </div>
                 </div>
-                <div class="controls-density" data-density-state="1">
-                    Row density :
-                    <button class="density density-L" data-density="1" disabled="disabled" type="button">L</button>
-                    <button class="density density-M" data-density="0.5" type="button">M</button>
-                    <button class="density density-S" data-density="0.25" type="button">S</button>
-                </div>
-                <div class="controls-pagination">
-                    Show page
-                    <select class="pagination">
-                    </select>
-                </div>
-            </div>
-            <table id="table" class="zebra-stripes line-divisions">
-                <thead></thead>
-                <tbody></tbody>
-            </table>
-            <div class="controls">
-                <div class="controls-show">Display
-                    <select class="show">
-                    </select>
-                </div>
-                <div controls-density>
-                    Row density :
-                    <button class="density density-L" data-density="1" disabled="disabled" type="button">L</button>
-                    <button class="density density-M" data-density="0.5" type="button">M</button>
-                    <button class="density density-S" data-density="0.25" type="button">S</button>
-                </div>
-                <div class="controls-pagination">
-                    Show page
-                    <select class="pagination">
-                    </select>
+                <table class="zebra-stripes line-divisions">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+                <div class="controls">
+                    <div class="controls-show">Display
+                        <select class="show">
+                        </select>
+                    </div>
+                    <div controls-density>
+                        Row density :
+                        <button class="density density-L" data-density="1" disabled="disabled" type="button">L</button>
+                        <button class="density density-M" data-density="0.5" type="button">M</button>
+                        <button class="density density-S" data-density="0.25" type="button">S</button>
+                    </div>
+                    <div class="controls-pagination">
+                        Show page
+                        <select class="pagination">
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

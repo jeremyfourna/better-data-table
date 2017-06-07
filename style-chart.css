@@ -31,4 +31,7 @@ svg > .title {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    border: 1px solid black;
+    padding: 5px;
+    margin-bottom: 20px;
 }
