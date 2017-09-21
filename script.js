@@ -211,7 +211,7 @@ function renderDataTable(config, domElem, rows) {
   }
 
   function changePagination(event) {
-    const valueLens = R.lensnewSortPath(['target', 'value']);
+    const valueLens = R.lensPath(['target', 'value']);
     const newPageToDisplay = Number(R.view(valueLens, event));
 
     return renderDataTable(getShowState(), newPageToDisplay, getSortingState(), defaultData);
@@ -221,7 +221,9 @@ function renderDataTable(config, domElem, rows) {
     const valueLens = R.lensPath(['target', 'value']);
     const newNbRowsToDisplay = Number(R.view(valueLens, event));
 
-    return renderDataTable(newNbRowsToDisplay, defaultPagination, getSortingState(), defaultData);
+    const newConfig = R.assocPath(['defaultOptions', 'pagination'], newNbRowsToDisplay, config);
+
+    return renderDataTable(newConfig, domElem, rows);
   }
 
   function changeDensity(event) {
@@ -241,8 +243,9 @@ function renderDataTable(config, domElem, rows) {
   }
 
   function removeEventListeners(element) {
-    const el = document.getElementById(element);
+    const el = document.getElementById(domElem);
 
+    console.log(domElem);
     if (!R.isNil(el.querySelector('#chevronToSort'))) {
       el.querySelector('#chevronToSort').removeEventListener('click', invertSort);
     }
