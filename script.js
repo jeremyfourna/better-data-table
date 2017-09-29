@@ -212,22 +212,6 @@ function renderDataTable(config, domElem, rows) {
       return renderDataTable(newConfig, domElem, rows);
     }
 
-    function changeDensity(event) {
-      const densityLens = R.lensPath(['target', 'dataset', 'density']);
-      const classLens = R.lensPath(['target', 'classList']);
-      const newDensity = Number(R.view(densityLens, event));
-      const buttonClassToDisable = R.join('', R.map((cur) => {
-        return `.${cur}`;
-      }, R.view(classLens, event)));
-
-      $('.density').attr('disabled', false);
-      $(buttonClassToDisable).attr('disabled', true);
-      $('td, th').css('padding-top', `${newDensity}rem`);
-      $('td, th').css('padding-bottom', `${newDensity}rem`);
-
-      return setDensity(newDensity);
-    }
-
     function removeEventListeners(element) {
       const el = document.getElementById(element);
 
@@ -281,19 +265,45 @@ function renderDataTable(config, domElem, rows) {
 
     registerEventListeners(domElem);*/
   function renderShow(show, list, nbRows) {
-
-    $('.show').append(
-      R.map((cur) => {
-        if (R.equals(show, cur)) {
-          return `<option selected="selected" value="${cur}">${cur}</option>`;
+    function selectOptions() {
+      function optionSelected(current) {
+        if (R.equals(show, current)) {
+          return `<option selected="selected" value="${current}">${current}</option>`;
         } else {
-          return `<option value="${cur}">${cur}</option>`;
+          return `<option value="${current}">${current}</option>`;
         }
-      }, list));
-
-    $('.controls-show').append(`<span class="nbRows"> rows out of ${nbRows}. </span>`);
+      }
+      return `<select id="bdt-show-select">
+                ${R.join('',R.map(optionSelected, list))}
+              </select>`;
+    }
+    return `Display ${selectOptions()}<span class="nbRows"> rows out of ${nbRows}</span>`;
   }
 
+  function renderDensity(density, list) {
+    function allDensityButtons(allOptions) {
+      return
+    }
+    return `Row density: ${R.join('',allDensityButtons(list))}`;
+  }
+
+  function frame() {
+    return `<div id="bdt-controls">
+              <div id="bdt-controls-show">
+                ${renderShow(
+                  R.path(['defaultOptions', 'showNbResults'], config),
+                  R.path(['allowedOptions', 'showNbResults'], config),
+                  R.length(rows)
+                )}
+              </div>
+              <div id="bdt-controls-density">
+                ${renderDensity(
+                  R.path(['defaultOptions', 'density'], config),
+                  R.path(['allowedOptions', 'density'], config)
+                )}
+              </div>
+            </div>`;
+  }
 
   function cleanHTML(element) {
     document.getElementById(element).innerHTML = '';
@@ -301,12 +311,7 @@ function renderDataTable(config, domElem, rows) {
   }
 
   cleanHTML(domElem);
-
-  renderShow(
-    R.path(['defaultOptions', 'sorting'], config),
-    R.path(['allowedOptions', 'showNbResults'], config),
-    R.length(rows)
-  );
+  document.getElementById(domElem).innerHTML = frame();
 }
 
 
