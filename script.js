@@ -1,3 +1,26 @@
+// Configuration object
+const configuration = {
+  defaultOptions: {
+    density: 1,
+    showNbResults: 10,
+    pagination: 1,
+    sorting: {
+      field: 'age',
+      asc: true
+    }
+  },
+  allowedOptions: {
+    density: [{ label: 'L', value: 1 }, { label: 'M', value: 0.5 }, { label: 'S', value: 0.25 }],
+    showNbResults: [10, 20, 50, 100, 500]
+  }
+};
+
+renderDataTable(
+  configuration,
+  'better-data-table',
+  generateDefaultData(200)
+);
+
 // generateDefaultData :: number -> [object]
 function generateDefaultData(howMany) {
   const list = R.range(0, howMany);
@@ -121,26 +144,6 @@ function renderDataTable(config, domElem, rows) {
     }
 
 
-    function renderPagination(show, current, rows) {
-      $('.pagination > option').remove();
-      $('.controls-pagination > .nbPages').remove();
-
-      const nbRows = R.length(rows);
-      const nbPages = R.range(1, R.inc(R.divide(nbRows, show)));
-
-      $('.pagination').append(
-        R.map((cur) => {
-          if (R.equals(current, cur)) {
-            return `<option selected="selected" value="${cur}">${cur}</option>`;
-          } else {
-            return `<option value="${cur}">${cur}</option>`;
-          }
-        }, nbPages));
-
-      $('.controls-pagination').append(`<span class="nbPages"> of ${R.last(nbPages)}</span>`);
-    }
-
-
     function registerEventListeners(element) {
       const el = document.getElementById(element);
       //////////////////////////////////////////
@@ -255,12 +258,6 @@ function renderDataTable(config, domElem, rows) {
     rows
   );
 
-    renderPagination(
-      R.path(['defaultOptions', 'showNbResults'], config),
-      R.prop,
-      rows
-    );
-
     setDensity(currentDensityState);
 
     registerEventListeners(domElem);*/
@@ -277,18 +274,41 @@ function renderDataTable(config, domElem, rows) {
                 ${R.join('',R.map(optionSelected, list))}
               </select>`;
     }
-    return `Display ${selectOptions()}<span class="nbRows"> rows out of ${nbRows}</span>`;
+    return `Display ${selectOptions()}<span> rows out of ${nbRows}</span>`;
   }
 
   function renderDensity(density, list) {
+
     function allDensityButtons(allOptions) {
-      return
+      return R.map(cur => `<button type='button' data-density='${R.prop('value', cur)}'>${R.prop('label', cur)}</button>`, allOptions);
     }
     return `Row density: ${R.join('',allDensityButtons(list))}`;
   }
 
+  function renderPagination(nbRowsToShow, currentPage, nbRows) {
+    function selectOptions(listOfPage) {
+      return R.map()
+    }
+
+    const nbPages = R.range(1, R.inc(R.divide(nbRows, nbRowsToShow)));
+
+
+    return `Show page <span> out of ${nbPages}</span>`
+
+    $('.pagination').append(
+      R.map((cur) => {
+        if (R.equals(current, cur)) {
+          return `<option selected="selected" value="${cur}">${cur}</option>`;
+        } else {
+          return `<option value="${cur}">${cur}</option>`;
+        }
+      }, nbPages));
+
+    $('.controls-pagination').append(`<span class="nbPages"> of ${R.last(nbPages)}</span>`);
+  }
+
   function frame() {
-    return `<div id="bdt-controls">
+    return `<div id="bdt-controls" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center;">
               <div id="bdt-controls-show">
                 ${renderShow(
                   R.path(['defaultOptions', 'showNbResults'], config),
@@ -302,7 +322,20 @@ function renderDataTable(config, domElem, rows) {
                   R.path(['allowedOptions', 'density'], config)
                 )}
               </div>
-            </div>`;
+              <div id="bdt-controls-pagination">
+                ${renderPagination(
+                  R.path(['defaultOptions', 'showNbResults'], config),
+                  R.path(['defaultOptions', 'pagination'], config),
+                  R.length(rows)
+                )}
+              </div>
+            </div>
+            <table style="width: 100%; margin-bottom: 5px; margin-top: 5px; border-spacing: 0px;">
+              <thead>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>`;
   }
 
   function cleanHTML(element) {
@@ -313,27 +346,3 @@ function renderDataTable(config, domElem, rows) {
   cleanHTML(domElem);
   document.getElementById(domElem).innerHTML = frame();
 }
-
-
-// Configuration object
-const configuration = {
-  defaultOptions: {
-    density: 1,
-    showNbResults: 10,
-    pagination: 1,
-    sorting: {
-      field: 'age',
-      asc: true
-    }
-  },
-  allowedOptions: {
-    density: [{ label: 'L', value: 1 }, { label: 'M', value: 0.5 }, { label: 'S', value: 0.25 }],
-    showNbResults: [10, 20, 50, 100, 500]
-  }
-};
-
-renderDataTable(
-  configuration,
-  'better-data-table',
-  generateDefaultData(200)
-);
