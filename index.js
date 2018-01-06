@@ -1,3 +1,5 @@
+const R = require('ramda');
+
 function renderDataTable(config, domElem, rows) {
   function renderShow(show, list, nbRows) {
     return `Display ${selectOptions('bdt-show-select', show, list)}<span> rows out of ${nbRows}</span>`;
@@ -162,6 +164,7 @@ function renderDataTable(config, domElem, rows) {
         return renderDataTable(newConfig, domElem, rows);
       }
     }
+
     const headers = document.querySelectorAll(`#${domElem} table thead th`);
     R.forEach(cur => cur.addEventListener('click', whatToDoOnEvent, false), headers);
   }
@@ -178,6 +181,8 @@ function renderDataTable(config, domElem, rows) {
   }
 
   function frame() {
+    const configPath = R.path(R.__, config);
+
     return `<div
               class="bdt-controls"
               style="
@@ -189,37 +194,37 @@ function renderDataTable(config, domElem, rows) {
             >
               <div class="bdt-controls-show">
                 ${renderShow(
-                  R.path(['defaultOptions', 'showNbResults'], config),
-                  R.path(['allowedOptions', 'showNbResults'], config),
+                  configPath(['defaultOptions', 'showNbResults']),
+                  configPath(['allowedOptions', 'showNbResults']),
                   R.length(rows)
                 )}
               </div>
               <div class="bdt-controls-density">
                 ${renderDensity(
-                  R.path(['defaultOptions', 'density'], config),
-                  R.path(['allowedOptions', 'density'], config)
+                  configPath(['defaultOptions', 'density']),
+                  configPath(['allowedOptions', 'density'])
                 )}
               </div>
               <div class="bdt-controls-pagination">
                 ${renderPagination(
-                  R.path(['defaultOptions', 'showNbResults'], config),
-                  R.path(['defaultOptions', 'pagination'], config),
+                  configPath(['defaultOptions', 'showNbResults']),
+                  configPath(['defaultOptions', 'pagination']),
                   R.length(rows)
                 )}
               </div>
             </div>
-            <table style="${R.path(['defaultOptions', 'tableStyle'], config)}">
+            <table style="${configPath(['defaultOptions', 'tableStyle'])}">
               ${renderTableHead(
-                R.path(['defaultOptions', 'density'], config),
-                R.path(['allowedOptions', 'columnsOrder'], config)
+                configPath(['defaultOptions', 'density']),
+                configPath(['allowedOptions', 'columnsOrder'])
               )}
               ${renderTableBody(
-                R.path(['defaultOptions', 'primaryKey'], config),
-                R.path(['defaultOptions', 'showNbResults'], config),
-                R.path(['defaultOptions', 'pagination'], config),
-                R.path(['defaultOptions', 'sorting'], config),
-                R.path(['defaultOptions', 'density'], config),
-                R.path(['allowedOptions', 'columnsOrder'], config),
+                configPath(['defaultOptions', 'primaryKey']),
+                configPath(['defaultOptions', 'showNbResults']),
+                configPath(['defaultOptions', 'pagination']),
+                configPath(['defaultOptions', 'sorting']),
+                configPath(['defaultOptions', 'density']),
+                configPath(['allowedOptions', 'columnsOrder']),
                 rows
               )}
             </table>`;
@@ -230,3 +235,5 @@ function renderDataTable(config, domElem, rows) {
 
   return document.getElementById(domElem);
 }
+
+exports.renderDataTable = R.curry(renderDataTable);

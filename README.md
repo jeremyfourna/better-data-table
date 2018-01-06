@@ -1,6 +1,50 @@
 # better-data-table
 
-Inspiration : https://uxdesign.cc/design-better-data-tables-4ecc99d23356
+## Installation
+
+`npm i better-data-table`
+
+## Usage
+
+```js
+const { renderDataTable } = require('better-data-table');
+
+// renderDataTable :: object -> string -> [object] -> Node
+renderDataTable(configForTheTable, 'idForDomElement', data);
+```
+
+### Configuration object
+
+```
+{
+  defaultOptions: {
+    density: number,
+    showNbResults: number,
+    pagination: number,
+    sorting: {
+      field: string,
+      asc: boolean
+    },
+    primaryKey: string,
+    tableStyle: string
+  },
+  allowedOptions: {
+    density: [{
+    	label: string,
+    	value: number
+	}],
+    showNbResults: [number],
+    columnsOrder: [{
+      field: string,
+      type: string
+    }]
+  }
+}
+```
+
+## Inspiration
+
+* https://uxdesign.cc/design-better-data-tables-4ecc99d23356
 
 ## Done
 
@@ -8,25 +52,22 @@ Inspiration : https://uxdesign.cc/design-better-data-tables-4ecc99d23356
 * Display Density
 * Pagination
 * Row Style
-* Inline Editing
-
-## WIP
-
-* Visual Table Summary
 
 ## To do
 
-* Hover Actions
+* Add Columns
+* Basic Filtering
+* Customizable Columns
 * Expandable Rows
-* Quick View
+* Filter Columns
+* Hover Actions
+* Inline Editing
 * Modal
 * Multi-Modal
+* Quick View
 * Row to Details
-* Basic Filtering
-* Filter Columns
 * Searchable Columns
-* Add Columns
-* Customizable Columns
+* Visual Table Summary
 
 ## Later version
 
