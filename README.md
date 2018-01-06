@@ -6,7 +6,7 @@
 
 `npm i better-data-table`
 
-## Usage
+## Usage
 
 ```js
 const { renderDataTable } = require('better-data-table');
@@ -14,8 +14,7 @@ const { renderDataTable } = require('better-data-table');
 // renderDataTable :: object -> string -> [object] -> Node
 renderDataTable(configForTheTable, 'idForDomElement', data);
 ```
-
-### Configuration object
+### Configuration object
 
 ```js
 {
