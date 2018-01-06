@@ -1,0 +1,26 @@
+{
+  "name": "better-data-table",
+  "version": "0.2.0",
+  "description": "Better data table via UXDesign.cc",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "example": "parcel example/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeremyfourna/better-data-table.git"
+  },
+  "author": "Jeremy Fourna <jeremyfourna@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeremyfourna/better-data-table/issues"
+  },
+  "homepage": "https://github.com/jeremyfourna/better-data-table#readme",
+  "dependencies": {
+    "ramda": "^0.25.0"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.4.1"
+  }
+}
