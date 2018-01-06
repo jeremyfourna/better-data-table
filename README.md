@@ -1,5 +1,7 @@
 # better-data-table
 
+[![NPM](https://nodei.co/npm/better-data-table.png)](https://www.npmjs.com/package/better-data-table)
+
 ## Installation
 
 `npm i better-data-table`
